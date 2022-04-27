@@ -12,9 +12,13 @@ const fetchMyIP = function(callback) {
     }
     const pBody = JSON.parse(body);
     const ip = pBody['ip'];
-    callback(error, response, ip);
+    callback(error, ip);
   });
 };
+
+//const fetchCoordsByIP = function(callback) {
+//  request.get()
+//}
 
 
 module.exports = { fetchMyIP };
