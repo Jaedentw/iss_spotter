@@ -47,8 +47,30 @@ const fetchFlyovers = function(coords, callback) {
       return;
     }
     const Response = JSON.parse(body).response;
-    callback(error, {Response});
+    callback(error, Response);
   });
 };
 
-module.exports = { fetchMyIP, fetchCoordsByIP, fetchFlyovers };
+const nextISSTimesForMyLocation = function(callback) {
+  fetchMyIP((error, ip) => {
+    if (error) {
+      return callback(error, null);
+    }
+
+    fetchCoordsByIP(ip, (error, loc) => {
+      if (error) {
+        return callback(error, null);
+      }
+
+      fetchFlyovers(loc, (error, nextPasses) => {
+        if (error) {
+          return callback(error, null);
+        }
+
+        callback(null, nextPasses);
+      });
+    });
+  });
+};
+
+module.exports = { nextISSTimesForMyLocation };
